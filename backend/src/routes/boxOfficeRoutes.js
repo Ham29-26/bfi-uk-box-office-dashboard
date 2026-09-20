@@ -9,6 +9,11 @@ router.get(
 );
 
 router.get(
+    "/movies",
+    boxOfficeController.getMovies
+);
+
+router.get(
     "/reporting-weekends/:id/movies",
     boxOfficeController.getMoviesByReportingWeekend
 );
@@ -19,8 +24,13 @@ router.get(
 );
 
 router.get(
-    "/movies/:id/box-office",
+    "/movies/:filmId/box-office/:reportingId",
     boxOfficeController.getMoviePerformanceById
+);
+
+router.get(
+    "/distributors",
+    boxOfficeController.getDistributors
 );
 
 router.get(
@@ -31,6 +41,11 @@ router.get(
 router.get(
     "/distributors/:id/movies",
     boxOfficeController.getMoviesByDistributor
+);
+
+router.get(
+    "/movies/:filmId/reporting-weekends",
+    boxOfficeController.getReportingWeekendsByFilmId
 );
 
 module.exports = router;

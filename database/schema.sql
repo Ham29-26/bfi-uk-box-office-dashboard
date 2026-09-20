@@ -13,6 +13,9 @@ CREATE TABLE film (
     film_title TEXT NOT NULL,
     country_of_origin TEXT NOT NULL,
     film_poster_img_path TEXT,
+    release_date DATE,
+    synopsis TEXT,
+    original_language TEXT,
     distributor_id INTEGER NOT NULL,
     FOREIGN KEY (distributor_id) REFERENCES distributor(distributor_id)
 );
@@ -53,3 +56,12 @@ ADD CONSTRAINT distributor_name_unique UNIQUE (distributor_name);
 -- Prevents duplicate film titles.
 ALTER TABLE film
 ADD CONSTRAINT film_title_unique UNIQUE (film_title);
+
+-- Adding a release date and synopsis column to our existing film table.
+ALTER TABLE film
+ADD COLUMN release_date DATE,
+ADD COLUMN synopsis TEXT;
+
+-- Adding an original language column to our existing film table
+ALTER TABLE film
+ADD COLUMN original_language TEXT;
