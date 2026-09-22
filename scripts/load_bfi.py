@@ -10,7 +10,7 @@ connection = psycopg.connect(
     port=5432,
     dbname="bfi_box_office",
     user="postgres",
-    password="Wombat2006!",
+    password="Hawkeye2021!",
 )
 
 print("Database connected!")
@@ -112,7 +112,14 @@ def populate_database(csv_file, reporting_id):
         # These values belong to the current film and reporting weekend.
         film_rank = row["Rank"]
         weekend_gross = row["Weekend Gross"]
+
         percent_change = row["% change on last week"]
+
+        # In case there is a film without a percent change value (a nan value)
+        # Change it into the data type None
+        if pd.isna(percent_change):
+            percent_change = None
+
         weeks_on_release = row["Weeks on release"]
         number_of_cinemas = row["Number of cinemas"]
         site_average = row["Site average"]
@@ -150,6 +157,8 @@ def populate_database(csv_file, reporting_id):
             f"Weekly Box Office record for the movie {film_title} during the weekend {start_date} to {end_date} has been inserted!"
         )
 
+
+# Running the populate_database method to populate all the tables
 
 # Locate the folder containing the processed BFI CSV files.
 processed_folder = Path("data/processed")

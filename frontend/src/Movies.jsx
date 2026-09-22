@@ -55,14 +55,15 @@ function Movies() {
 
     const dateFormatter = (strDate) => {
         const date = new Date(strDate)
+        const day = String(date.getDate()).padStart(2, "0")
 
-        return date.getDate() + " " + months[date.getMonth()] + ", " + date.getFullYear();
+        return day + " " + months[date.getMonth()] + ", " + date.getFullYear();
     }
 
 
     return (
         <>
-        <h2>Movies</h2>
+        <h1 className="page-title">Movies</h1>
 
         {movies.map(movie => (
             <Link
@@ -71,7 +72,7 @@ function Movies() {
             to={`/movies/${movie.film_id}/box-office/${movie.reporting_id}`}
             >
 
-            <div className="movie-card">
+            <div className="movie-card movie-card-detailed">
             <img 
                 src={`https://image.tmdb.org/t/p/w500${movie.film_poster_img_path}`}
                 alt={`${movie.film_title.replace(' ', '_')}_film_poster`}
@@ -80,17 +81,17 @@ function Movies() {
             <aside>
                 <h2>{movie.film_title}</h2>
 
-                <p>Release Date: {dateFormatter(movie.release_date)}</p>
+                <p><strong>Release Date:</strong> {dateFormatter(movie.release_date)}</p>
 
-                <p>Country of Origin: {movie.country_of_origin}</p>
+                <p><strong>Country of Origin:</strong> {movie.country_of_origin}</p>
 
-                <p>Original Language: {ISO6391.getName(movie.original_language)} {movie.original_language !== "en" ? ISO6391.getNativeName(movie.original_language) : ""}</p>
+                <p><strong>Original Language:</strong> {ISO6391.getName(movie.original_language)} {movie.original_language !== "en" ? ISO6391.getNativeName(movie.original_language) : ""}</p>
 
-                <p>Distributor: {movie.distributor_name}</p>
+                <p><strong>Distributor:</strong> {movie.distributor_name}</p>
 
-                <p>Synopsis: {movie.synopsis}</p>
+                <p className="synopsis"><strong>Synopsis:</strong> {movie.synopsis}</p>
 
-                <p>Total Gross (as of {dateFormatter(movie.end_date)}): £ {Number(movie.total_gross_to_date).toLocaleString()}</p>
+                <p><strong>Total Gross (as of {dateFormatter(movie.end_date)}):</strong> £ {Number(movie.total_gross_to_date).toLocaleString()}</p>
 
                 <p className="movie-details-link">
                 Click here to view more details

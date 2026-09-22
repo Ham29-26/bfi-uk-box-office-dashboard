@@ -15,17 +15,17 @@ BFI Weekend Box Office Reports
             ↓
       Python + Pandas
             ↓
-     Cleaned CSV data
+       Cleaned CSV data
             ↓
-        PostgreSQL
+         PostgreSQL
             ↓
-     Node.js + Express
+      Node.js + Express
             ↓
-        REST API
+         REST API
             ↓
           React
             ↓
- Interactive web dashboard
+  Interactive web dashboard
 ```
 
 TMDB is also used as a supplementary external API for movie metadata and poster images:
@@ -33,7 +33,7 @@ TMDB is also used as a supplementary external API for movie metadata and poster 
 ```text
 React / Node.js
       ↓
-  TMDB API
+   TMDB API
       ↓
 Movie metadata + poster paths
 ```
@@ -89,25 +89,43 @@ The processing pipeline:
 
 ```text
 data/raw/
+
     ↓
+
 Read BFI .ods report
+
     ↓
+
 Identify report dates
+
     ↓
+
 Extract Top 15 table
+
     ↓
+
 Clean column structure
+
     ↓
+
 Convert relevant data types
+
     ↓
+
 Handle missing percentage values
+
     ↓
+
 Add reporting weekend dates
+
     ↓
+
 data/processed/
 ```
 
 The original BFI files remain untouched.
+
+The processing script supports multiple BFI reports and avoids regenerating processed CSV files when they already exist.
 
 Python packages used include:
 
@@ -120,7 +138,7 @@ Python packages used include:
 
 The cleaned BFI data is stored in a PostgreSQL relational database.
 
-The current database contains four main tables:
+The database contains four main tables:
 
 ```text
 distributor
@@ -174,12 +192,15 @@ PostgreSQL
 
 The frontend communicates with the backend through HTTP requests rather than connecting directly to PostgreSQL.
 
+Controllers use asynchronous JavaScript with `async/await` for database operations and error handling.
+
 ### Current API endpoints
 
 #### Reporting weekends
 
 ```text
 GET /api/reporting-weekends
+
 GET /api/reporting-weekends/:id/movies
 ```
 
@@ -189,21 +210,27 @@ These endpoints provide reporting-weekend information and the Top 15 films for a
 
 ```text
 GET /api/movies
+
 GET /api/movies/:id
-GET /api/movies/:id/box-office
+
 GET /api/movies/:filmId/box-office/:reportingId
+
 GET /api/movies/:filmId/reporting-weekends
 ```
 
 The movies endpoint selects the most recent available reporting weekend for each film.
 
-The movie details endpoint allows the user to select different reporting weekends and view the film's performance for that particular weekend.
+The movie details endpoint allows the user to select a reporting weekend and view the film's performance history up to that selected weekend.
+
+The reporting-weekends endpoint for a film returns only the reporting weekends in which that film has available box-office data.
 
 #### Distributors
 
 ```text
 GET /api/distributors
+
 GET /api/distributors/:id
+
 GET /api/distributors/:id/movies
 ```
 
@@ -232,13 +259,33 @@ Examples include:
 
 ```text
 en → English
+
 hi → Hindi
+
 te → Telugu
+
 ml → Malayalam
+
 ko → Korean
 ```
 
 TMDB API credentials are stored in environment variables and are not committed to the repository.
+
+### TMDB Movie Matching Limitation
+
+Some films cannot always be matched automatically when searching the TMDB API because the title provided by the BFI differs from the title stored by TMDB.
+
+Differences can include:
+
+* Capitalisation
+* Punctuation
+* Alternative title wording
+* Additional or missing words
+* Subtitle or franchise naming differences
+
+For these cases, the film may require manual matching against the corresponding TMDB entry.
+
+This limitation is caused by differences between the naming conventions of the BFI source data and TMDB rather than by the box-office data itself.
 
 ### TMDB Attribution
 
@@ -275,6 +322,8 @@ Express REST API
 PostgreSQL
 ```
 
+The frontend also uses **Recharts** to provide interactive historical box-office visualisations.
+
 ---
 
 ## Current Pages and Features
@@ -304,18 +353,27 @@ The Movie Details page displays:
 
 * Film title
 * Poster
+* Film rank for the selected weekend
 * Release date
 * Country of origin
 * Original language
 * Distributor
 * Synopsis
+* Weekend gross
 * Total gross to date
 * Percentage change on last week
 * Weeks on release
 * Number of cinemas
 * Site average
 
-Users can select different reporting weekends to view the film's historical box-office performance.
+Users can select different reporting weekends where the film has available data.
+
+Historical performance is visualised using interactive Recharts line charts for:
+
+* Weekend Gross
+* Total Gross to Date
+
+The charts retain the underlying weekly data while allowing users to hover over individual points to view the corresponding reporting weekend and performance information.
 
 ### Distributors
 
@@ -342,6 +400,19 @@ The About page documents:
 
 ---
 
+## Current Dataset
+
+The current development dataset contains:
+
+* **3 BFI reporting weekends**
+* **15 films per reporting weekend**
+* **45 weekly box-office records**
+* **23 unique films**
+
+The dataset will be expanded to include additional reporting weekends across Summer 2026.
+
+---
+
 ## Current Project Status
 
 ### Completed
@@ -352,6 +423,7 @@ The About page documents:
 * [x] PostgreSQL database design
 * [x] PostgreSQL schema and relationships
 * [x] Python database loader
+* [x] Duplicate reporting-weekend handling
 * [x] Node.js backend
 * [x] Express REST API
 * [x] Backend database integration
@@ -365,21 +437,30 @@ The About page documents:
 * [x] React Router navigation
 * [x] Reporting-weekend selection
 * [x] Movie details pages
+* [x] Historical movie performance data
+* [x] Recharts historical box-office visualisations
+* [x] Responsive metric/card layouts
 * [x] Distributor pages
 * [x] Distributor movie pages
 * [x] API/frontend integration
+* [x] Controller `async/await` refactoring
 * [x] Git/GitHub version control
 
 ### In Progress / Planned
 
-* [ ] Clean up and refine frontend CSS
-* [ ] Improve overall UI/UX
-* [ ] Add movie performance charts
-* [ ] Add historical box-office visualisations
 * [ ] Improve reporting-weekend selection for larger datasets
+* [ ] Add reporting year/month/weekend navigation
+* [ ] Add movie search
+* [ ] Add movie filtering
+* [ ] Add movie sorting
+* [ ] Add distributor search
+* [ ] Add distributor sorting
+* [ ] Add pagination for movies and distributors
 * [ ] Add more BFI reporting weekends across Summer 2026
-* [ ] Expand dashboard analytics
+* [ ] Improve chart X-axis presentation for larger numbers of reporting weekends
+* [ ] Create a unified data-population runner
 * [ ] Further testing and error handling
+* [ ] Final frontend cleanup and refinement
 * [ ] Consider deployment once the local application is complete
 
 ---
@@ -388,6 +469,7 @@ The About page documents:
 
 ```text
 bfi-uk-box-office-dashboard/
+
 │
 ├── README.md
 ├── .gitignore
@@ -406,7 +488,6 @@ bfi-uk-box-office-dashboard/
 ├── backend/
 │   ├── package.json
 │   ├── package-lock.json
-│   ├── .env
 │   ├── test_tmdb.js
 │   ├── populate_movie_metadata.js
 │   └── src/
@@ -444,9 +525,9 @@ The repository `.gitignore` excludes:
 * `.env`
 * `.venv`
 * `node_modules`
-* build output
-* local IDE files
-* generated/local files
+* Build output
+* Local IDE files
+* Generated/local files
 
 Database credentials and the TMDB access token must never be committed to GitHub.
 
@@ -464,7 +545,7 @@ Database credentials and the TMDB access token must never be committed to GitHub
 
 * PostgreSQL
 * SQL
-* psycopg
+* `psycopg`
 
 ### Backend
 
@@ -482,6 +563,7 @@ Database credentials and the TMDB access token must never be committed to GitHub
 
 * React
 * React Router
+* Recharts
 * JavaScript
 * HTML
 * CSS
@@ -509,6 +591,8 @@ This project is intended to provide practical experience with:
 * Client-side routing
 * Asynchronous JavaScript
 * Working with external APIs
+* Data visualisation
+* Responsive frontend design
 * Git and GitHub
 * Building a complete full-stack application
 

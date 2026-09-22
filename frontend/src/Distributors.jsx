@@ -33,7 +33,7 @@ function Distributors() {
 
     return(
         <>
-        <p>Distributors</p>
+        <h1 className="page-title">Distributors</h1>
 
         {distributors.map(distributor => (
             <Link
@@ -42,7 +42,9 @@ function Distributors() {
                 to={`/distributors/${distributor.distributor_id}/movies`}
             >
                 <div>
-                    <p>{distributor.distributor_name} ({distributor.number_of_films_distributed} films)</p>
+                    <h2 className="distributor-name">
+                        {distributor.distributor_name} ({distributor.number_of_films_distributed} films)
+                    </h2>
 
                     <div className="distributor-film-posters">
                         {distributor.preview_movies

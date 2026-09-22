@@ -40,7 +40,7 @@ const getMovies = () => {
                 ON weekly_box_office.film_id = film.film_id
             JOIN reporting_weekend
                 ON reporting_weekend.reporting_id = weekly_box_office.reporting_id
-            ORDER BY film.release_date DESC, reporting_weekend.start_date DESC
+            ORDER BY film.release_date DESC, reporting_weekend.start_date DESC, weekly_box_office.total_gross_to_date DESC
         ) AS recent_film_entries
         WHERE row_num = 1;  
     `);
@@ -94,7 +94,7 @@ const getMovieById = (filmId) => {
     `, [filmId]);
 };
 
-const getMoviePerformanceById = (filmId, reportingId) => {
+const getMoviePerformanceUpToWeekend = (filmId, reportingId) => {
     return pool.query(`
         SELECT
             film.film_id,
@@ -123,7 +123,12 @@ const getMoviePerformanceById = (filmId, reportingId) => {
         JOIN distributor
             ON distributor.distributor_id = film.distributor_id
         WHERE weekly_box_office.film_id = $1
-            AND weekly_box_office.reporting_id = $2;
+            AND reporting_weekend.start_date <= (
+                SELECT start_date
+                FROM reporting_weekend
+                WHERE reporting_id = $2
+            )
+        ORDER BY reporting_weekend.start_date ASC;
     `, [filmId, reportingId]);
 };
 
@@ -212,7 +217,8 @@ const getReportingWeekendsByFilmId = (filmId) => {
         FROM weekly_box_office
         JOIN reporting_weekend
             ON weekly_box_office.reporting_id = reporting_weekend.reporting_id
-        WHERE weekly_box_office.film_id = $1;    
+        WHERE weekly_box_office.film_id = $1
+        ORDER BY reporting_weekend.start_date DESC;     
     `, [filmId]);
 }
 
@@ -221,7 +227,7 @@ module.exports = {
     getMovies,
     getMoviesByReportingWeekend,
     getMovieById,
-    getMoviePerformanceById,
+    getMoviePerformanceUpToWeekend,
     getDistributors,
     getDistributorById,
     getMoviesByDistributor,

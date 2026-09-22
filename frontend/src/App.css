@@ -1,54 +1,78 @@
 /* App.jsx */
 nav {
-    background-color: #1a1a1a;
-    padding: 15px 20px;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
+  background-color: #111f31;
+  padding: 15px 20px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 0;
+  margin: 0;
 }
 
 nav li {
-    font-size: 17px;
+  font-size: 17px;
 }
 
-nav a,
-nav li {
-    color: #fff;
-    text-decoration: none;
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
- nav li:hover {
-  text-decoration: underline;
- }
+
+nav a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+}
 
 
 /* Header.jsx */
 header {
   text-align: center;
-  padding: 30px 20px;
+  padding: 35px 20px 30px;
+}
+
+header h1 {
+  margin: 20px;
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 18px;
+  margin-top: 30px;
 }
 
 
 /* Home.jsx */
 .weekend-selector {
   display: block;
-  margin: 20px auto 10px;
-  padding: 10px 14px;
-  font-size: 16px;
+  margin: 35px auto 15px;
+  padding: 11px 16px;
+  font-size: 17px;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .selected-weekend {
   text-align: center;
-  font-size: 17px;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text-h);
+  margin: 0 20px 35px;
 }
 
 
@@ -57,10 +81,13 @@ header {
   display: flex;
   gap: 25px;
   max-width: 1000px;
-  margin: 0 auto;
-  padding: 25px 0;
-  border-bottom: 1px solid #ccc;
+  margin: 0 auto 20px;
+  padding: 25px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .movie-card img {
@@ -76,12 +103,14 @@ header {
 
 .movie-card h2 {
   font-size: 30px;
-  margin-bottom: 40px;
+  margin: 0 0 35px;
+  color: var(--text-h);
 }
 
 .movie-card p {
   font-size: 20px;
-  margin: 20px 0;
+  margin: 18px 0;
+  color: var(--text);
 }
 
 .movie-card-link {
@@ -90,92 +119,410 @@ header {
 }
 
 .movie-details-link {
+  color: var(--text);
   text-decoration: underline;
+  transition: color 0.2s ease;
 }
 
 .movie-details-link:hover {
-  color: azure;
+  color: var(--accent);
+}
+
+@media (max-width: 650px) {
+  .movie-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .movie-card img {
+    width: 180px;
+  }
+
+  .movie-card aside {
+    width: 100%;
+  }
+
+  .movie-card h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .movie-card p {
+    font-size: 17px;
+  }
+}
+
+/* Movies.jsx */
+.page-title {
+  text-align: center;
+  margin: 35px 20px 40px;
+}
+
+h1.page-title {
+  font-size: 36px;
+  line-height: 1.6;
+}
+
+h2.page-title {
+  font-size: 30px;
+}
+
+/* Detailed movie cards */
+.movie-card-detailed img {
+  width: 220px;
+}
+
+.movie-card-detailed {
+  gap: 30px;
+}
+
+.movie-card-detailed {
+  gap: 30px;
+}
+
+.movie-card-detailed aside {
+  text-align: left;
+}
+
+.movie-card-detailed h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+.movie-card-detailed p {
+  margin: 18px 0;
+  line-height: 1.6;
+}
+
+.movie-card-detailed .synopsis {
+  line-height: 1.7;
+}
+
+/* Responsive detailed cards */
+@media (max-width: 650px) {
+  .movie-card-detailed {
+    text-align: center;
+  }
+
+  .movie-card-detailed aside {
+    text-align: left;
+  }
 }
 
 /* About.jsx */
 .about-page {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-.about-page > h2 {
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 40px;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .about-page section {
-    margin-bottom: 35px;
-    padding: 25px;
-    border: 1px solid #333;
-    border-radius: 8px;
+  margin-bottom: 25px;
+  padding: 25px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
 }
 
 .about-page h3 {
-    font-size: 24px;
-    margin-top: 0;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--text-h);
 }
 
 .about-page h4 {
-    font-size: 19px;
-    margin-top: 25px;
-    margin-bottom: 10px;
+  font-size: 19px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: var(--text-h);
 }
 
 .about-page p {
-    font-size: 17px;
-    line-height: 1.6;
-    margin-bottom: 15px;
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: var(--text);
 }
 
 .about-page a {
-    color: inherit;
+  color: var(--text);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.about-page a:hover {
+  color: var(--accent);
 }
 
 .about-page img {
-    display: block;
-    width: 220px;
-    height: auto;
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  margin: 25px auto;
+}
+
+@media (max-width: 600px) {
+  .about-page {
     margin: 25px auto;
+    padding: 0 15px;
+  }
+
+  .about-page > h2 {
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+
+  .about-page section {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .about-page h3 {
+    font-size: 21px;
+  }
+
+  .about-page h4 {
+    font-size: 18px;
+  }
+
+  .about-page p {
+    font-size: 16px;
+  }
+
+  .about-page img {
+    width: 180px;
+  }
 }
 
 
 /* Distributors.jsx */
+.distributor-card-link {
+  display: block;
+  max-width: 1000px;
+  margin: 0 auto 25px;
+  padding: 25px;
+  box-sizing: border-box;
+
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+.distributor-name {
+  margin: 0 0 35px;
+  font-size: 28px;
+  color: var(--text-h);
+}
+
 .distributor-film-posters {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 20px;
+}
+
+.distributor-film-posters figure {
+  margin: 0;
+  min-width: 0;
+  text-align: center;
 }
 
 .distributor-film-posters img {
-  width: 200px;
+  display: block;
+  width: 100%;
+  max-width: 175px;
   height: auto;
+  margin: 0 auto;
 }
 
-.distributor-card-link {
-  text-decoration: none;
-  color: inherit;
+.distributor-film-posters figcaption {
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.4;
+  overflow-wrap: break-word;
 }
 
 .distributor-details-link {
-  display: block;
+  margin: 30px 0 0;
+  color: var(--text);
   text-decoration: underline;
+  transition: color 0.2s ease;
 }
 
 .distributor-details-link:hover {
-  color: azure;
+  color: var(--accent);
 }
 
+
+@media (max-width: 600px) {
+
+  .distributor-card-link {
+    padding: 20px;
+  }
+
+  .distributor-name {
+    font-size: 23px;
+    margin-bottom: 30px;
+  }
+
+  .distributor-film-posters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+
+  .distributor-film-posters img {
+    max-width: 140px;
+  }
+
+  .distributor-film-posters figcaption {
+    font-size: 14px;
+  }
+
+  .distributor-details-link {
+    margin-top: 25px;
+  }
+}
+
+/* DistributorMovies.jsx */
 .distributor-back-link {
+  display: inline-block;
+  margin: 25px 20px 0;
+  padding: 9px 14px;
+
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+
   text-decoration: none;
-  color: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .distributor-back-link:hover {
-  color: azure;
+  color: var(--accent);
+  background-color: var(--surface-hover);
+}
+
+/* MovieDetails.jsx */
+.movie-card-details {
+  max-width: 1100px;
+  gap: 45px;
+  align-items: flex-start;
+}
+
+.movie-card-details img {
+  height: 650px;
+  width: auto;
+}
+
+.movie-card-details aside {
+  flex: 1;
+  text-align: left;
+}
+
+.selected-weekend-figures {
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    padding: 25px 30px;
+
+    display: flex;
+    gap: 20px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.metric-card {
+    flex: 1;
+    padding: 20px;
+
+    background: var(--surface-hover);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.metric-card h3 {
+    margin: 0 0 10px;
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+.metric-card p {
+    margin: 0;
+    color: var(--text-h);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.performance-metric {
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    padding: 25px 30px;
+
+    display: flex;
+    gap: 20px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+@media (max-width: 700px) {
+
+    .selected-weekend-figures,
+    .performance-metric {
+        flex-direction: column;
+    }
+
+    .metric-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}
+
+/* Rechart styles */
+.chart-tooltip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 15px;
+    box-shadow: var(--shadow);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.chart-tooltip p {
+    margin: 5px 0;
+}
+
+.chart-tooltip p span {
+    color: var(--text-muted);
+}
+
+.chart-tooltip .tooltip-weekend {
+    color: var(--text-h);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.chart-card {
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    padding: 25px 30px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
 }

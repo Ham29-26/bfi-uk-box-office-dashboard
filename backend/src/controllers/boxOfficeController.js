@@ -1,77 +1,95 @@
 const boxOfficeModel = require("../models/boxOfficeModel");
 
-const getReportingWeekends = (req, res) => {
-    boxOfficeModel.getReportingWeekends()
-        .then(result => {
-            res.json(result.rows);
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error: "Database query failed" });
-        });
+const getReportingWeekends = async (req, res) => {
+
+    try {
+
+        const result = await boxOfficeModel.getReportingWeekends();
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
 
-const getMovies = (req, res) => {
-    boxOfficeModel.getMovies()
-        .then(result => {
-            res.json(result.rows);
-        })
-        .catch(error => {
-            console.error(error);
-            res.staus(500).json({ error: "Database query failed" });
-        });
+const getMovies = async (req, res) => {
+    
+    try {
+
+        const result = await boxOfficeModel.getMovies();
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
 };
 
-const getMoviesByReportingWeekend = (req, res) => {
-    const reportingId = req.params.id;
+const getMoviesByReportingWeekend = async (req, res) => {
 
-    boxOfficeModel.getMoviesByReportingWeekend(reportingId)
-        .then(result => {
-            res.json(result.rows);
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error : "Database query failed" });
-        });
+    try {
+
+        const reportingId = req.params.id;
+
+        const result = await boxOfficeModel.getMoviesByReportingWeekend(reportingId);
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
 
-const getMovieById = (req, res) => {
-    const filmId = req.params.id;
+const getMovieById = async (req, res) => {
 
-    boxOfficeModel.getMovieById(filmId)
-        .then(result => {
-            res.json(result.rows);
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error : "Database query failed" });
-        });
+    try {
+
+        const filmId = req.params.id;
+
+        const result = await boxOfficeModel.getMovieById(filmId);
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
 
-const getMoviePerformanceById = (req, res) => {
-    const filmId = req.params.filmId;
-    const reportingId = req.params.reportingId;
+const getMoviePerformanceUpToWeekend = async (req, res) => {
 
-    boxOfficeModel.getMoviePerformanceById(filmId, reportingId)
-        .then(result => {
-            res.send(result.rows)
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error : "Database query failed" });
-        });
+    try {
+
+        const filmId = req.params.filmId;
+        const reportingId = req.params.reportingId;
+
+        const result = await boxOfficeModel.getMoviePerformanceUpToWeekend(filmId, reportingId);
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
-
-// const getDistributors = (req, res) => {
-//     boxOfficeModel.getDistributors()
-//         .then(result => {
-//             res.send(result.rows)
-//         })
-//         .catch(error => {
-//             console.error(error);
-//             res.status(500).json({ error: "Database query failed" });
-//         });
-// };
 
 const getDistributors = async (req, res) => {
 
@@ -114,48 +132,67 @@ const getDistributors = async (req, res) => {
     } catch(error) {
 
         console.error(error);
+        res.status(500).json({ error: "Database query failed" });
 
     }
 
 }
 
-const getDistributorById = (req, res) => {
-    const distributorId = req.params.id;
+const getDistributorById = async (req, res) => {
 
-    boxOfficeModel.getDistributorById(distributorId)
-        .then(result => {
-            res.send(result.rows)
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error: "Database query failed" });
-        });
+    try {
+
+        const distributorId = req.params.id;
+
+        const result = await boxOfficeModel.getDistributorById(distributorId);
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
 
-const getMoviesByDistributor = (req, res) => {
-    const distributorId = req.params.id;
+const getMoviesByDistributor = async (req, res) => {
 
-    boxOfficeModel.getMoviesByDistributor(distributorId)
-        .then(result => {
-            res.send(result.rows)
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error: "Database query failed" });
-        });
+    try {
+
+        const distributorId = req.params.id;
+
+        const result = await boxOfficeModel.getMoviesByDistributor(distributorId);
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
 
-const getReportingWeekendsByFilmId = (req, res) => {
-    const filmId = req.params.filmId;
+const getReportingWeekendsByFilmId = async (req, res) => {
 
-    boxOfficeModel.getReportingWeekendsByFilmId(filmId)
-        .then(result => {
-            res.send(result.rows)
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).json({ error: "Database query failed" });
-        });
+    try {
+
+        const filmId = req.params.filmId;
+
+        const result = await boxOfficeModel.getReportingWeekendsByFilmId(filmId);
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+
 };
 
 module.exports = {
@@ -163,7 +200,7 @@ module.exports = {
     getMovies,
     getMoviesByReportingWeekend,
     getMovieById,
-    getMoviePerformanceById,
+    getMoviePerformanceUpToWeekend,
     getDistributors,
     getDistributorById,
     getMoviesByDistributor,

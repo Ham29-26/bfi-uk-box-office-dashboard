@@ -25,7 +25,7 @@ router.get(
 
 router.get(
     "/movies/:filmId/box-office/:reportingId",
-    boxOfficeController.getMoviePerformanceById
+    boxOfficeController.getMoviePerformanceUpToWeekend
 );
 
 router.get(

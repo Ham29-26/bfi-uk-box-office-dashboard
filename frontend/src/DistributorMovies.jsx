@@ -53,8 +53,9 @@ function DistributorMovies() {
 
     const dateFormatter = (strDate) => {
         const date = new Date(strDate)
+        const day = String(date.getDate()).padStart(2, "0")
 
-        return date.getDate() + " " + months[date.getMonth()] + ", " + date.getFullYear();
+        return day + " " + months[date.getMonth()] + ", " + date.getFullYear();
     }
 
 
@@ -64,10 +65,12 @@ function DistributorMovies() {
             to={"/distributors"}
             className="distributor-back-link"
         >
-            Back
+            ← Back to Distributors
         </Link>
 
-        <p>Movies distributed by {movies[0]?.distributor_name}</p>
+        <h1 className="page-title">
+            Movies distributed by {movies[0]?.distributor_name}
+        </h1>
 
         {movies.map(movie => (
             <Link
@@ -76,7 +79,7 @@ function DistributorMovies() {
             to={`/movies/${movie.film_id}/box-office/${movie.reporting_id}`}
             >
 
-            <div className="movie-card">
+            <div className="movie-card movie-card-detailed">
             <img 
                 src={`https://image.tmdb.org/t/p/w500${movie.film_poster_img_path}`}
                 alt={`${movie.film_title.replace(' ', '_')}_film_poster`}

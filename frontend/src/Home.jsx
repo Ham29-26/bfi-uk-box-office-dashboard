@@ -83,16 +83,21 @@ function Home(props) {
         const startDate = new Date(strStartDate)
         const endDate = new Date(strEndDate)
 
+        //in case of single digit dates pad the start of the date 
+        // with an extra 0 so it becomes 05 June and not 5 June
+        const startDay = String(startDate.getDate()).padStart(2, "0");
+        const endDay = String(endDate.getDate()).padStart(2, "0")
+
         //if the start and end date months are different specify both month names
         if (startDate.getMonth() != endDate.getMonth()) {
-        return startDate.getDate() 
-        + " " + months[startDate.getMonth()] 
-        + " – " + endDate.getDate() 
-        + " " + months[endDate.getMonth()]
+            return startDay
+            + " " + months[startDate.getMonth()] 
+            + " – " + endDay 
+            + " " + months[endDate.getMonth()]
         }
 
         //if the start and end date months are the same specify only one month name
-        return startDate.getDate() + " – " + endDate.getDate() + " " + months[startDate.getMonth()]
+        return startDay + " – " + endDay + " " + months[startDate.getMonth()]
     }
     
     //capturing the selected weekend data
@@ -117,7 +122,7 @@ function Home(props) {
         </select>
 
         <p className="selected-weekend">
-        Selected weekend: {
+        Showing films for {
             selectedWeekendData
             ? dateFormatter(
                 selectedWeekendData.start_date,
