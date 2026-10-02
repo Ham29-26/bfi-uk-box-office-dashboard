@@ -63,6 +63,28 @@ function About() {
             </section>
 
             <section>
+                <h3>Data notes</h3>
+
+                <p> 
+                    Movie release dates shown in this application may not 
+                    always correspond to the reporting weekend in which a 
+                    film appears. Some films may be older releases that 
+                    have returned to cinemas through re-releases, 
+                    special screenings, or other limited theatrical events. 
+                </p>
+
+                <p> 
+                    Release dates may also differ between sources due to 
+                    regional release schedules. The BFI data represents 
+                    UK cinema box-office reporting, while movie information 
+                    and release dates are sourced from TMDB. As a result, 
+                    the release date displayed for a film may not always 
+                    match the UK theatrical date associated with its 
+                    BFI reporting weekend. 
+                </p>
+            </section>
+
+            <section>
                 <h3>Attribution</h3>
 
                 <img

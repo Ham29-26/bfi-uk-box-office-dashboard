@@ -4,9 +4,115 @@ const getReportingWeekends = async (req, res) => {
 
     try {
 
-        const result = await boxOfficeModel.getReportingWeekends();
+        const {reportingWeekendsAsc, reportingWeekendsDesc} = await boxOfficeModel.getReportingWeekends();
 
-        res.json(result.rows);
+        let groupedWeekendsAsc = {};
+        let groupedWeekendsDesc = {};
+
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ]
+
+        //created the grouped weekends object for the weekends in ascending order
+        for (const entry of reportingWeekendsAsc.rows) {
+            const startDate = new Date(entry.start_date);
+            const endDate = new Date(entry.end_date);
+
+            const [startYear, startMonth] = [startDate.getFullYear(), months[startDate.getMonth()]];
+            const [endYear, endMonth] = [endDate.getFullYear(), months[endDate.getMonth()]];
+
+            //checking if either start or end year exists in our reportingWeekends object
+            //if not add it as a new year entry
+            if (!Object.hasOwn(groupedWeekendsAsc, startYear)) {
+                groupedWeekendsAsc[startYear] = {};
+            }
+
+            if (!Object.hasOwn(groupedWeekendsAsc, endYear)) {
+                groupedWeekendsAsc[endYear] = {};
+            }
+
+            //checking if the corresponding year contains the month entry
+            //if not add it to the corresponding year as a new month entry
+            if (!Object.hasOwn(groupedWeekendsAsc[startYear], startMonth)) {
+                groupedWeekendsAsc[startYear][startMonth] = [];
+            }
+
+            if (!Object.hasOwn(groupedWeekendsAsc[endYear], endMonth)) {
+                groupedWeekendsAsc[endYear][endMonth] = [];
+            }
+
+            //check if the start and end months OR start and end years are different
+            //if they are different push both their entries into the same year-month array
+            if (startYear != endYear || startMonth != endMonth) {
+                groupedWeekendsAsc[startYear][startMonth].push(entry);
+                groupedWeekendsAsc[endYear][endMonth].push(entry);
+            
+            //if they are the same then push only one entry and either
+            //start or end date entry would work as they would reflect the same thing
+            } else {
+                groupedWeekendsAsc[startYear][startMonth].push(entry);
+            }
+
+        }
+
+
+        //created the grouped weekends object for the weekends in descending order
+        for (const entry of reportingWeekendsDesc.rows) {
+            const startDate = new Date(entry.start_date);
+            const endDate = new Date(entry.end_date);
+
+            const [startYear, startMonth] = [startDate.getFullYear(), months[startDate.getMonth()]];
+            const [endYear, endMonth] = [endDate.getFullYear(), months[endDate.getMonth()]];
+
+            //checking if either start or end year exists in our reportingWeekends object
+            //if not add it as a new year entry
+            if (!Object.hasOwn(groupedWeekendsDesc, startYear)) {
+                groupedWeekendsDesc[startYear] = {};
+            }
+
+            if (!Object.hasOwn(groupedWeekendsDesc, endYear)) {
+                groupedWeekendsDesc[endYear] = {};
+            }
+
+            //checking if the corresponding year contains the month entry
+            //if not add it to the corresponding year as a new month entry
+            if (!Object.hasOwn(groupedWeekendsDesc[startYear], startMonth)) {
+                groupedWeekendsDesc[startYear][startMonth] = [];
+            }
+
+            if (!Object.hasOwn(groupedWeekendsDesc[endYear], endMonth)) {
+                groupedWeekendsDesc[endYear][endMonth] = [];
+            }
+
+            //check if the start and end months OR start and end years are different
+            //if they are different push both their entries into the same year-month array
+            if (startYear != endYear || startMonth != endMonth) {
+                groupedWeekendsDesc[startYear][startMonth].push(entry);
+                groupedWeekendsDesc[endYear][endMonth].push(entry);
+            
+            //if they are the same then push only one entry and either
+            //start or end date entry would work as they would reflect the same thing
+            } else {
+                groupedWeekendsDesc[startYear][startMonth].push(entry);
+            }
+
+        }
+
+        res.json({
+            groupedWeekendsAsc: groupedWeekendsAsc,
+            groupedWeekendsDesc: groupedWeekendsDesc
+        });
 
     } catch(error) {
 
@@ -21,7 +127,17 @@ const getMovies = async (req, res) => {
     
     try {
 
-        const result = await boxOfficeModel.getMovies();
+        //collecting the search query and other filters
+        //from the queries parameter in the request object
+        const searchQuery = req.query.search;
+        const language = req.query.language;
+        const minGross = req.query.minGross;
+        const maxGross = req.query.maxGross;
+
+        //collecting sorting parameters from the request object
+        const sortQuery = req.query.sort;
+
+        const result = await boxOfficeModel.getMovies(searchQuery, language, minGross, maxGross, sortQuery);
 
         res.json(result.rows);
 
@@ -32,6 +148,22 @@ const getMovies = async (req, res) => {
 
     }
 };
+
+const getLanguages = async (req, res) => {
+    
+    try {
+
+        const result = await boxOfficeModel.getLanguages();
+
+        res.json(result.rows);
+
+    } catch(error) {
+
+        console.error(error);
+        res.status(500).json({ error: "Database query failed" });
+
+    }
+}
 
 const getMoviesByReportingWeekend = async (req, res) => {
 
@@ -95,7 +227,12 @@ const getDistributors = async (req, res) => {
 
     try {
 
-        const { distributors, movies } = await boxOfficeModel.getDistributors();
+        //collecting the search and sort queries
+        //from the queries parameter in the request object
+        const searchQuery = req.query.search;
+        const sortQuery = req.query.sort;
+
+        const { distributors, movies } = await boxOfficeModel.getDistributors(searchQuery, sortQuery);
 
         let distributorsMetaData = [];
         let previewMovies = [];
@@ -163,7 +300,12 @@ const getMoviesByDistributor = async (req, res) => {
 
         const distributorId = req.params.id;
 
-        const result = await boxOfficeModel.getMoviesByDistributor(distributorId);
+        //collecting the search and sort queries
+        //from the queries parameter in the request object
+        const searchQuery = req.query.search;
+        const sortQuery = req.query.sort;
+
+        const result = await boxOfficeModel.getMoviesByDistributor(distributorId, searchQuery, sortQuery);
 
         res.json(result.rows);
 
@@ -184,7 +326,72 @@ const getReportingWeekendsByFilmId = async (req, res) => {
 
         const result = await boxOfficeModel.getReportingWeekendsByFilmId(filmId);
 
-        res.json(result.rows);
+        let groupedWeekends = {};
+
+        const rawWeekends = result.rows;
+
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ]
+
+
+        //created the grouped weekends object for the weekends
+        for (const entry of rawWeekends) {
+            const startDate = new Date(entry.start_date);
+            const endDate = new Date(entry.end_date);
+
+            const [startYear, startMonth] = [startDate.getFullYear(), months[startDate.getMonth()]];
+            const [endYear, endMonth] = [endDate.getFullYear(), months[endDate.getMonth()]];
+
+            //checking if either start or end year exists in our reportingWeekends object
+            //if not add it as a new year entry
+            if (!Object.hasOwn(groupedWeekends, startYear)) {
+                groupedWeekends[startYear] = {};
+            }
+
+            if (!Object.hasOwn(groupedWeekends, endYear)) {
+                groupedWeekends[endYear] = {};
+            }
+
+            //checking if the corresponding year contains the month entry
+            //if not add it to the corresponding year as a new month entry
+            if (!Object.hasOwn(groupedWeekends[startYear], startMonth)) {
+                groupedWeekends[startYear][startMonth] = [];
+            }
+
+            if (!Object.hasOwn(groupedWeekends[endYear], endMonth)) {
+                groupedWeekends[endYear][endMonth] = [];
+            }
+
+            //check if the start and end months OR start and end years are different
+            //if they are different push both their entries into the same year-month array
+            if (startYear != endYear || startMonth != endMonth) {
+                groupedWeekends[startYear][startMonth].push(entry);
+                groupedWeekends[endYear][endMonth].push(entry);
+            
+            //if they are the same then push only one entry and either
+            //start or end date entry would work as they would reflect the same thing
+            } else {
+                groupedWeekends[startYear][startMonth].push(entry);
+            }
+
+        }
+
+        res.json({
+            rawWeekends: rawWeekends,
+            groupedWeekends: groupedWeekends,
+        });
 
     } catch(error) {
 
@@ -198,6 +405,7 @@ const getReportingWeekendsByFilmId = async (req, res) => {
 module.exports = {
     getReportingWeekends,
     getMovies,
+    getLanguages,
     getMoviesByReportingWeekend,
     getMovieById,
     getMoviePerformanceUpToWeekend,

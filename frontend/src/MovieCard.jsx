@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function MovieCard(props) {
     console.log(props.movie);
-    console.log(props.selectedWeekend);
+    console.log(props.selectedWeekendId);
 
     let film_rank_with_emoji;
 
@@ -21,14 +21,14 @@ function MovieCard(props) {
 
     return (
       <Link 
-        className="movie-card-link"
+        className="movie-card-link movie-card-link-home"
         key={props.movie.film_id}
-        to={`/movies/${props.movie.film_id}/box-office/${props.selectedWeekend}`}
+        to={`/movies/${props.movie.film_id}/box-office/${props.selectedWeekendId}`}
       >
         <div className="movie-card">
           <img 
               src={`https://image.tmdb.org/t/p/w500${props.movie.film_poster_img_path}`}
-              alt={`${props.movie.film_title.replace(' ', '_')}_film_poster`}
+              alt={`${props.movie.film_title} Film Poster`}
           />
 
           <aside>

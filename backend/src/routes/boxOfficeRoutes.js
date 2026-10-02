@@ -14,6 +14,11 @@ router.get(
 );
 
 router.get(
+    "/languages",
+    boxOfficeController.getLanguages
+);
+
+router.get(
     "/reporting-weekends/:id/movies",
     boxOfficeController.getMoviesByReportingWeekend
 );

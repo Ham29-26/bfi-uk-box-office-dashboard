@@ -79,11 +79,15 @@ def process_bfi_sheet_to_csv(sheet_file_name):
     # This excludes the grand total row and the "Other UK Films" section.
     df = df.iloc[:15]
 
-    # The "% change on last week" column contains "-" for films
+    # The "% change on last week" column contains "-" or empty space " " for films
     # where a previous-week comparison is not available.
     # Replace "-" with NaN so Pandas treats these values as missing
     # numerical data rather than strings.
-    df["% change on last week"] = df["% change on last week"].replace("-", float("nan"))
+    df["% change on last week"] = (
+        df["% change on last week"]
+        .replace("-", float("nan"))
+        .replace(r"^\s*$", float("nan"), regex=True)
+    )
 
     # Convert the relevant columns to appropriate numerical data types.
     # This allows Pandas to perform calculations such as max(),

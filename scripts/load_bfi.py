@@ -1,16 +1,25 @@
+import os
+from pathlib import Path
+
 import psycopg
 import pandas as pd
-from pathlib import Path
+from dotenv import load_dotenv
+
+BACKEND_FOLDER = Path(__file__).resolve().parent.parent / "backend"
+
+load_dotenv(BACKEND_FOLDER / ".env")
+
+print("DB password loaded:", os.getenv("DB_PASSWORD") is not None)
 
 # Connect to the local PostgreSQL database.
 # The connection is used throughout the script to execute SQL queries
 # and insert the processed BFI data into the database.
 connection = psycopg.connect(
-    host="localhost",
-    port=5432,
-    dbname="bfi_box_office",
-    user="postgres",
-    password="Hawkeye2021!",
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT"),
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
 )
 
 print("Database connected!")

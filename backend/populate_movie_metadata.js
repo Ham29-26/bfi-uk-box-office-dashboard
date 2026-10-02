@@ -46,6 +46,11 @@ async function populateMovieMetadata() {
             
 
             if (matchingFilm) {
+                const posterPath = matchingFilm.poster_path || null;
+                const releaseDate = matchingFilm.release_date || null;
+                const synopsis = matchingFilm.overview?.trim() || null;
+                const originalLanguage = matchingFilm.original_language || null;
+
                 const updateResult = await pool.query(`
                     UPDATE film
                     SET film_poster_img_path = $1,
@@ -54,10 +59,10 @@ async function populateMovieMetadata() {
                         original_language = $4
                     WHERE film_id = $5;
                 `, [
-                    matchingFilm.poster_path, 
-                    matchingFilm.release_date, 
-                    matchingFilm.overview, 
-                    matchingFilm.original_language,
+                    posterPath, 
+                    releaseDate, 
+                    synopsis, 
+                    originalLanguage,
                     film.film_id
                 ]);
 
@@ -70,10 +75,12 @@ async function populateMovieMetadata() {
         
     } catch (error) {
 
-        console.error(error)
+        console.error(error);
+        process.exit(1);
 
     }
 }
+
 
 populateMovieMetadata();
 
