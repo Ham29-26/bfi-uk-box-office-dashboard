@@ -11,6 +11,8 @@ import {
     ResponsiveContainer
 } from "recharts";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 //creating a dictionary of fall back languages for 
 //languages that have not been identifed by the ISO package
 const languageFallbacks = {
@@ -119,7 +121,7 @@ function MovieDetails() {
             
             try {
 
-                const response = await fetch(`http://localhost:3000/api/movies/${filmId}/reporting-weekends`);
+                const response = await fetch(`${API_BASE_URL}/movies/${filmId}/reporting-weekends`);
 
                 const data = await response.json();
 
@@ -170,7 +172,7 @@ function MovieDetails() {
             
             try {
 
-                const response = await fetch(`http://localhost:3000/api/movies/${filmId}/box-office/${reportingId}`);
+                const response = await fetch(`${API_BASE_URL}/movies/${filmId}/box-office/${reportingId}`);
 
                 const data = await response.json();
 

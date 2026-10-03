@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import MovieCard from './MovieCard'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function Home(props) {
 
     //state variable to control the url param queries in the url
@@ -26,7 +28,7 @@ function Home(props) {
 
             try {
 
-                const response = await fetch("http://localhost:3000/api/reporting-weekends");
+                const response = await fetch(`${API_BASE_URL}/reporting-weekends`);
 
                 const data = await response.json();
 
@@ -103,7 +105,7 @@ function Home(props) {
 
                 if (selectedWeekendId) {
 
-                    const response = await fetch(`http://localhost:3000/api/reporting-weekends/${selectedWeekendId}/movies`);
+                    const response = await fetch(`${API_BASE_URL}/reporting-weekends/${selectedWeekendId}/movies`);
 
                     const data = await response.json();
 

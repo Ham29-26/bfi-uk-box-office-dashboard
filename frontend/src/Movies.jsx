@@ -4,6 +4,8 @@ import ISO6391 from "iso-639-1"
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 //creating a dictionary of fall back languages for 
 //languages that have not been identifed by the ISO package
 const languageFallbacks = {
@@ -135,8 +137,8 @@ function Movies() {
                 const queryString = params.toString();
 
                 const url = queryString
-                    ? `http://localhost:3000/api/movies?${queryString}`
-                    : "http://localhost:3000/api/movies";
+                    ? `${API_BASE_URL}/movies?${queryString}`
+                    : `${API_BASE_URL}/movies`;
 
                 const response = await fetch(url);
 
@@ -191,7 +193,7 @@ function Movies() {
             
             try {
 
-                const response = await fetch ("http://localhost:3000/api/languages");
+                const response = await fetch (`${API_BASE_URL}/languages`);
 
                 const data = await response.json();
 

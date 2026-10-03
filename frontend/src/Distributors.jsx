@@ -2,6 +2,8 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { Link, useSearchParams } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function Distributors() {
 
     //creating a state to store all the distributors we have
@@ -40,8 +42,8 @@ function Distributors() {
                 const queryString = params.toString();
 
                 const url = queryString
-                    ? `http://localhost:3000/api/distributors?${queryString}`
-                    : "http://localhost:3000/api/distributors";
+                    ? `${API_BASE_URL}/distributors?${queryString}`
+                    : `${API_BASE_URL}/distributors`;
 
                 const response = await fetch(url);
 

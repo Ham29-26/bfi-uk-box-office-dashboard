@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom"
 import { Link, useSearchParams } from "react-router-dom";
 import ISO6391 from "iso-639-1";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 //creating a dictionary of fall back languages for 
 //languages that have not been identifed by the ISO package
 const languageFallbacks = {
@@ -54,8 +56,8 @@ function DistributorMovies() {
                 const queryString = params.toString();
 
                 const url = queryString
-                    ? `http://localhost:3000/api/distributors/${distributorId}/movies?${queryString}`
-                    : `http://localhost:3000/api/distributors/${distributorId}/movies`;
+                    ? `${API_BASE_URL}/distributors/${distributorId}/movies?${queryString}`
+                    : `${API_BASE_URL}/distributors/${distributorId}/movies`;
 
                 const response = await fetch(url);
 
