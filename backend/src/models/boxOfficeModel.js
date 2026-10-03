@@ -75,11 +75,11 @@ const getMovies = (searchQuery, language, minGross, maxGross, sortQuery) => {
     + " total_gross_to_date DESC";
 
     if (sortQuery === "title-asc") {
-        orderClause = "ORDER BY film_title ASC";
+        orderClause = "ORDER BY REGEXP_REPLACE(LOWER(film_title), '^[^a-z]+', '') ASC";
     }
 
     if (sortQuery === "title-desc") {
-        orderClause = "ORDER BY film_title DESC";
+        orderClause = "ORDER BY REGEXP_REPLACE(LOWER(film_title), '^[^a-z]+', '') DESC";
     }
 
     if (sortQuery === "release-asc") {
