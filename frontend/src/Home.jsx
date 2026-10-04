@@ -82,8 +82,6 @@ function Home(props) {
 
                 setSelectedWeekendId(latestWeekendId);
 
-                setSearchParams({ weekend: latestWeekendId });
-
             } catch(error) {
 
                 console.error(error);
