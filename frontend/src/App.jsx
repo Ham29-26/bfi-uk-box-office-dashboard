@@ -42,6 +42,30 @@ function App() {
         <Route path="/movies/:filmId/box-office/:reportingId" element={<MovieDetails />} />
         <Route path="/distributors/:distributorId/movies" element={<DistributorMovies />}/>
     </Routes>
+
+    <footer className="site-footer">
+      <p>
+        Built by Hamza Kazi
+      </p>
+
+      <div className="footer-links">
+        <a
+          href="https://github.com/Ham29-26"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/hamza-kazi1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          LinkedIn
+        </a>
+      </div>
+    </footer>
     </>
   )
 }

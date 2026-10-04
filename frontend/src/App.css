@@ -37,6 +37,74 @@ nav a:hover {
   }
 }
 
+.site-footer {
+
+  background-color: #111f31;
+
+  border-top: 1px solid var(--border);
+
+  padding: 20px;
+
+  margin-top: 40px;
+
+  text-align: center;
+
+  color: var(--text-muted);
+
+  font-size: 18px;
+
+}
+
+.site-footer p {
+
+  margin: 0;
+
+}
+
+.footer-links {
+
+  display: flex;
+
+  justify-content: space-evenly;
+
+  gap: 25px;
+
+  margin-top: 10px;
+
+}
+
+.footer-links a {
+
+  color: var(--text);
+
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+
+}
+
+.footer-links a:hover {
+
+  color: var(--accent);
+
+}
+
+@media (max-width: 600px) {
+
+  .site-footer {
+
+    padding: 18px 15px;
+
+  }
+
+  .footer-links {
+
+    gap: 20px;
+
+  }
+
+}
+
 
 /* Header.jsx */
 header {
