@@ -20,6 +20,8 @@ async function populateMovieMetadata() {
             return;
         }
 
+        const unmatchedFilms = [];
+
         let rowsUpdated = 0;
 
         for (const film of films) {
@@ -36,7 +38,7 @@ async function populateMovieMetadata() {
 
             console.log("TMDB HTTP status:", response.status);
 
-            const data = await response.json();   
+            const data = await response.json();
 
             const matchingFilm = data.results.find(
                 filmResult => filmResult.title.toLowerCase() === film.film_title.toLowerCase()
@@ -44,7 +46,6 @@ async function populateMovieMetadata() {
 
             console.log("Matching films:", matchingFilm);
             
-
             if (matchingFilm) {
                 const posterPath = matchingFilm.poster_path || null;
                 const releaseDate = matchingFilm.release_date || null;
@@ -67,11 +68,33 @@ async function populateMovieMetadata() {
                 ]);
 
                 rowsUpdated += updateResult.rowCount;
+            
+            } else {
+
+                unmatchedFilms.push(film);
+
             }
 
         }
         
         console.log(`Rows updated: ${rowsUpdated}`);
+
+        
+        if (unmatchedFilms.length > 0) {
+
+            console.log("The following films could not be matched:");
+
+            for (const film of unmatchedFilms) {
+
+                console.log(`Film ID: ${film.film_id}, Film title: ${film.film_title}`);
+
+            }
+
+        } else {
+
+            console.log("All films were matched and their metadata was populated successfully!");
+
+        }
         
     } catch (error) {
 
