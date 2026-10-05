@@ -8,9 +8,9 @@ async function populateMovieMetadata() {
             SELECT film_id, film_title
             FROM film
             WHERE film_poster_img_path IS NULL
-                OR release_date IS NULL
-                OR synopsis IS NULL
-                OR original_language IS NULL;
+                AND release_date IS NULL
+                AND synopsis IS NULL
+                AND original_language IS NULL;
         `)
 
         const films = result.rows;
