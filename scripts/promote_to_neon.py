@@ -250,6 +250,7 @@ def promote_reporting_weekends(
             """
             INSERT INTO reporting_weekend
                 (reporting_id, start_date, end_date)
+            OVERRIDING SYSTEM VALUE
             VALUES
                 (%s, %s, %s);
         """,
@@ -305,6 +306,7 @@ def promote_distributors(local_connection, neon_connection, distributor_ids):
             """
             INSERT INTO distributor
                 (distributor_id, distributor_name)
+            OVERRIDING SYSTEM VALUE
             VALUES
                 (%s, %s);
         """,
@@ -372,6 +374,7 @@ def promote_films(local_connection, neon_connection, film_ids):
                 synopsis,
                 original_language
             )
+            OVERRIDING SYSTEM VALUE
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
         """,
             film,
