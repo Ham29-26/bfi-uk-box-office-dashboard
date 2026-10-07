@@ -26,7 +26,7 @@ async function populateMovieMetadataManual() {
         let rowsUpdated = 0;
 
         const response = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("National Theatre Live: The Playboy of the Western World")}&primary_release_year=2026`,
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("Manually Input Film Title")}&primary_release_year=2026`,
             {
                 headers: {
                     Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`
@@ -66,7 +66,7 @@ async function populateMovieMetadataManual() {
                 releaseDate, 
                 synopsis, 
                 originalLanguage,
-                239
+                ManuallyInputFilmId
             ]);
 
             rowsUpdated += updateResult.rowCount;
