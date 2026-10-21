@@ -11,6 +11,7 @@ def process_bfi_sheet_to_csv(sheet_file_name):
         f"data/raw/{sheet_file_name}",
         engine="odf",
         header=None,
+        nrows=17,
     )
 
     # Store the report title from the first cell.

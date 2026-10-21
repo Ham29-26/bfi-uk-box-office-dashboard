@@ -23,10 +23,23 @@ async function populateMovieMetadataManual() {
             return;
         }
 
-        let rowsUpdated = 0;
+        // Fetch the exact movie using its TMDB ID in case we are following this approach
+        // const tmdbMovieId = 1321666;
+        //         const response = await fetch(
+        //     `https://api.themoviedb.org/3/movie/${tmdbMovieId}`,
+        //     {
+        //         headers: {
+        //             Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`
+        //         }
+        //     }
+        // );
+
+        // if (movie.id !== tmdbMovieId) {
+        //     throw new Error("TMDB returned an unexpected movie ID.");
+        // }
 
         const response = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("Manually Input Film Title")}&primary_release_year=2026`,
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("Hadestown: The Musical")}&primary_release_year=2026`,
             {
                 headers: {
                     Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`
@@ -36,23 +49,29 @@ async function populateMovieMetadataManual() {
 
         console.log("TMDB HTTP status:", response.status);
 
+        if (!response.ok) {
+            throw new Error(`TMDB request failed: ${response.status}`);
+        }
+
         const data = await response.json();   
 
-        //TESTING
-        // console.log("Movie metadata", data);
-        
-        console.log("Movie Title: ", data.results[0].title);
-        console.log("Release Date: ", data.results[0].release_date);
-        console.log("Synopsis: " + data.results[0].overview);
-        console.log("Original Language: " + data.results[0].original_language);
+        const movie = data.results?.[0] || data;
 
+        //TESTING
+        console.log(`Movie Title: ${movie.title || "No matching film found"}`);
+        console.log(`Release Date: ${movie.release_date || "No matching film found"}`);
+        console.log(`Synopsis: ${movie.overview?.trim() || "No matching film found"}`);
+        console.log(`Original Language: ${movie.original_language || "No matching film found"}`);
+
+        
+        let rowsUpdated = 0;
 
         //MANUAL ADDITION
-        if (data.results) {
-            const posterPath = data.results[0].poster_path || null;
-            const releaseDate = data.results[0].release_date || null;
-            const synopsis = data.results[0].overview?.trim() || null;
-            const originalLanguage = data.results[0].original_language || null;
+        if (movie.id && movie.title) {
+            const posterPath = movie.poster_path || null;
+            const releaseDate = movie.release_date || null;
+            const synopsis = movie.overview?.trim() || null;
+            const originalLanguage = movie.original_language || null;
 
             const updateResult = await pool.query(`
                 UPDATE film
@@ -66,7 +85,7 @@ async function populateMovieMetadataManual() {
                 releaseDate, 
                 synopsis, 
                 originalLanguage,
-                ManuallyInputFilmId
+                256
             ]);
 
             rowsUpdated += updateResult.rowCount;
