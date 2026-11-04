@@ -140,7 +140,7 @@ header p.update-notice {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    width: 250px;
+    width: 270px;
 }
 
 .selector-group label {
