@@ -39,7 +39,7 @@ async function populateMovieMetadataManual() {
         // }
 
         const response = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("BTS WORLD TOUR [ARIRANG] in São Paulo")}&primary_release_year=2026`,
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("George Michael: The Faith Tour")}&primary_release_year=2026`,
             {
                 headers: {
                     Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`
@@ -85,7 +85,7 @@ async function populateMovieMetadataManual() {
                 releaseDate, 
                 synopsis, 
                 originalLanguage,
-                269
+                274
             ]);
 
             rowsUpdated += updateResult.rowCount;
