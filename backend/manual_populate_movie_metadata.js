@@ -24,7 +24,7 @@ async function populateMovieMetadataManual() {
         }
 
         // Fetch the exact movie using its TMDB ID in case we are following this approach
-        // const tmdbMovieId = 1321666;
+        // const tmdbMovieId = 1694097;
         //         const response = await fetch(
         //     `https://api.themoviedb.org/3/movie/${tmdbMovieId}`,
         //     {
@@ -34,12 +34,8 @@ async function populateMovieMetadataManual() {
         //     }
         // );
 
-        // if (movie.id !== tmdbMovieId) {
-        //     throw new Error("TMDB returned an unexpected movie ID.");
-        // }
-
         const response = await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("George Michael: The Faith Tour")}&primary_release_year=2026`,
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent("O.M: Operation Mole")}&primary_release_year=2026`,
             {
                 headers: {
                     Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`
@@ -56,6 +52,11 @@ async function populateMovieMetadataManual() {
         const data = await response.json();   
 
         const movie = data.results?.[0] || data;
+
+        // Use this check if the TMDB Movie ID approach instead of search query is chosen
+        // if (movie.id !== tmdbMovieId) {
+        //     throw new Error("TMDB returned an unexpected movie ID.");
+        // }
 
         //TESTING
         console.log(`Movie Title: ${movie.title || "No matching film found"}`);
@@ -85,7 +86,7 @@ async function populateMovieMetadataManual() {
                 releaseDate, 
                 synopsis, 
                 originalLanguage,
-                274
+                284
             ]);
 
             rowsUpdated += updateResult.rowCount;
